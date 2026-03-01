@@ -37,6 +37,7 @@ node "$SCRIPT" start               # Start recording
 node "$SCRIPT" stop                # Stop recording (returns MP4 path)
 node "$SCRIPT" setup [bundle-id]   # Setup scene for app (default: Chrome)
 node "$SCRIPT" app [bundle-id]     # Get or switch target application
+node "$SCRIPT" mode [display|window|application]  # Switch capture mode
 node "$SCRIPT" dir [path]          # Get/set recording directory
 ```
 
@@ -64,6 +65,18 @@ If unsure of a bundle ID, find it with:
 ```bash
 osascript -e 'id of app "AppName"'
 ```
+
+## Capture Modes
+
+```bash
+node "$SCRIPT" mode display       # Record entire screen
+node "$SCRIPT" mode application   # Record specific app (default)
+node "$SCRIPT" mode window        # Record specific window (requires OBS window selection)
+```
+
+- **display**: Records the full screen. Use when user says "record my screen" or "record the desktop".
+- **application**: Records all windows of a specific app. Best for most use cases. Default mode.
+- **window**: Records a single window. Requires manual window selection in OBS UI.
 
 ## Typical Workflow
 

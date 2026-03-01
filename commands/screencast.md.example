@@ -26,6 +26,7 @@ The user invoked `/screencast` with these possible arguments:
 - **status** - Check OBS connection, recording state, and current target app
 - **setup [bundle-id]** - Create OBS scene for app capture (default: Chrome)
 - **app [bundle-id]** - Get or switch the target application
+- **mode [display|window|application]** - Switch capture mode
 - **dir [path]** - Get or set the recording output directory
 
 ## How to Execute
@@ -59,6 +60,16 @@ To look up an unknown app's bundle ID:
 osascript -e 'id of app "AppName"'
 ```
 
+## Capture Modes
+
+```bash
+node "$SCRIPT" mode display       # Record entire screen
+node "$SCRIPT" mode application   # Record specific app (default)
+node "$SCRIPT" mode window        # Record specific window
+```
+
+Use `display` when user says "record my screen". Use `application` (default) for recording a specific app.
+
 ## Handling Results
 
 ### On success (`ok: true`):
@@ -67,6 +78,7 @@ osascript -e 'id of app "AppName"'
 - **stop**: Report the output MP4 file path
 - **setup**: Confirm scene creation and which app is being captured
 - **app**: Show current target or confirm switch
+- **mode**: Show current mode or confirm switch
 - **dir**: Show current or newly set recording directory
 
 ### On error (`ok: false`):
