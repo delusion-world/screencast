@@ -180,7 +180,8 @@ async function cmdSetup() {
           inputKind: "screen_capture",
           inputSettings: {
             show_cursor: true,
-            type: 0, // 0=display capture (most reliable)
+            type: 2, // 0=display, 1=window, 2=application
+            application: "com.google.Chrome",
           },
           sceneItemEnabled: true,
         });
@@ -192,7 +193,8 @@ async function cmdSetup() {
             inputKind: "macos_screen_capture",
             inputSettings: {
               show_cursor: true,
-              type: 0,
+              type: 2,
+              application: "com.google.Chrome",
             },
             sceneItemEnabled: true,
           });
