@@ -267,6 +267,61 @@ async function cmdMode(mode) {
   }
 }
 
+async function cmdWindow(query) {
+  const obs = await connect();
+  try {
+    // Get all available windows
+    const props = await obs.call("GetInputPropertiesListPropertyItems", {
+      inputName: SOURCE_NAME,
+      propertyName: "window",
+    });
+    const windows = props.propertyItems;
+
+    if (!query) {
+      // List all windows
+      return {
+        ok: true,
+        action: "list_windows",
+        windows: windows.map((w) => ({
+          id: w.itemValue,
+          name: w.itemName,
+        })),
+      };
+    }
+
+    // Search for matching window (case-insensitive)
+    const q = query.toLowerCase();
+    const match = windows.find((w) => w.itemName.toLowerCase().includes(q));
+
+    if (!match) {
+      throw new ControllerError(
+        `No window matching "${query}". Use 'window' with no args to list all.`
+      );
+    }
+
+    // Switch to window mode and select the window
+    await obs.call("SetInputSettings", {
+      inputName: SOURCE_NAME,
+      inputSettings: {
+        type: 1,
+        window: match.itemValue,
+      },
+      overlay: true,
+    });
+
+    await adaptCanvas(obs);
+
+    return {
+      ok: true,
+      action: "set_window",
+      windowId: match.itemValue,
+      windowName: match.itemName,
+    };
+  } finally {
+    obs.disconnect();
+  }
+}
+
 async function cmdSetup(bundleId) {
   const app = bundleId || DEFAULT_APP;
   const obs = await connect();
@@ -434,6 +489,9 @@ async function main() {
       case "mode":
         result = await cmdMode(args[0]);
         break;
+      case "window":
+        result = await cmdWindow(args[0]);
+        break;
       case "dir":
         result = await cmdDir(args[0]);
         break;
@@ -441,7 +499,7 @@ async function main() {
         console.log(
           JSON.stringify({
             ok: false,
-            error: `Unknown command: ${cmd}. Valid commands: status, start, stop, setup [bundle-id], app [bundle-id], mode [display|window|application], dir [path]`,
+            error: `Unknown command: ${cmd}. Valid commands: status, start, stop, setup [bundle-id], app [bundle-id], mode [display|window|application], window [search], dir [path]`,
           })
         );
         process.exit(1);
