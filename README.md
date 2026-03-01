@@ -37,7 +37,7 @@ Copy the slash command and skill into your project or global Claude Code config:
 mkdir -p .claude/commands .claude/skills
 
 # Copy slash command
-cp ~/.claude/plugins/screencast/commands/screencast.md .claude/commands/
+cp ~/.claude/plugins/screencast/commands/screencast.md.example .claude/commands/
 
 # Copy skill
 cp -r ~/.claude/plugins/screencast/skills/screencast .claude/skills/
@@ -47,7 +47,7 @@ cp -r ~/.claude/plugins/screencast/skills/screencast .claude/skills/
 
 ```bash
 # Copy to global Claude Code config
-cp ~/.claude/plugins/screencast/commands/screencast.md ~/.claude/commands/
+cp ~/.claude/plugins/screencast/commands/screencast.md.example ~/.claude/commands/
 cp -r ~/.claude/plugins/screencast/skills/screencast ~/.claude/skills/
 ```
 
