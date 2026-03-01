@@ -185,15 +185,15 @@ async function cmdApp(bundleId) {
         const settings = await obs.call("GetInputSettings", {
           inputName: SOURCE_NAME,
         });
+        const typeNames = { 0: "display", 1: "window", 2: "application" };
         return {
           ok: true,
           application: settings.inputSettings.application || null,
           type: settings.inputSettings.type,
+          mode: typeNames[settings.inputSettings.type] || "unknown",
         };
       } catch (_) {
-        throw new ControllerError(
-          "Source not found. Run 'setup' first."
-        );
+        throw new ControllerError("Source not found. Run 'setup' first.");
       }
     }
 
@@ -213,6 +213,54 @@ async function cmdApp(bundleId) {
       ok: true,
       action: "set_app",
       application: bundleId,
+    };
+  } finally {
+    obs.disconnect();
+  }
+}
+
+async function cmdMode(mode) {
+  const obs = await connect();
+  try {
+    const modeMap = { display: 0, window: 1, application: 2, app: 2 };
+    const typeNames = { 0: "display", 1: "window", 2: "application" };
+
+    if (!mode) {
+      try {
+        const settings = await obs.call("GetInputSettings", {
+          inputName: SOURCE_NAME,
+        });
+        return {
+          ok: true,
+          type: settings.inputSettings.type,
+          mode: typeNames[settings.inputSettings.type] || "unknown",
+          application: settings.inputSettings.application || null,
+        };
+      } catch (_) {
+        throw new ControllerError("Source not found. Run 'setup' first.");
+      }
+    }
+
+    const typeVal = modeMap[mode.toLowerCase()];
+    if (typeVal === undefined) {
+      throw new ControllerError(
+        `Unknown mode: ${mode}. Valid modes: display, window, application`
+      );
+    }
+
+    await obs.call("SetInputSettings", {
+      inputName: SOURCE_NAME,
+      inputSettings: { type: typeVal },
+      overlay: true,
+    });
+
+    await adaptCanvas(obs);
+
+    return {
+      ok: true,
+      action: "set_mode",
+      mode: typeNames[typeVal],
+      type: typeVal,
     };
   } finally {
     obs.disconnect();
@@ -383,6 +431,9 @@ async function main() {
       case "app":
         result = await cmdApp(args[0]);
         break;
+      case "mode":
+        result = await cmdMode(args[0]);
+        break;
       case "dir":
         result = await cmdDir(args[0]);
         break;
@@ -390,7 +441,7 @@ async function main() {
         console.log(
           JSON.stringify({
             ok: false,
-            error: `Unknown command: ${cmd}. Valid commands: status, start, stop, setup [bundle-id], app [bundle-id], dir [path]`,
+            error: `Unknown command: ${cmd}. Valid commands: status, start, stop, setup [bundle-id], app [bundle-id], mode [display|window|application], dir [path]`,
           })
         );
         process.exit(1);
