@@ -11,12 +11,12 @@ You are controlling OBS Studio screen recording through the `obs-controller.mjs`
 Run this to locate the controller script:
 
 ```bash
-SCRIPT="$(find ~/. -maxdepth 5 -name obs-controller.mjs -path '*/chrome-screen-recording/*' -print -quit 2>/dev/null)"
+SCRIPT="$(find ~/. -maxdepth 5 -name obs-controller.mjs -path '*/screencast/*' -print -quit 2>/dev/null)"
 ```
 
-If `CHROME_SCREEN_RECORDING_DIR` is set, use that instead:
+If `SCREENCAST_DIR` is set, use that instead:
 ```bash
-SCRIPT="${CHROME_SCREEN_RECORDING_DIR}/scripts/obs-controller.mjs"
+SCRIPT="${SCREENCAST_DIR}/scripts/obs-controller.mjs"
 ```
 
 ## Commands

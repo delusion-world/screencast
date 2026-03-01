@@ -4,7 +4,7 @@ set -euo pipefail
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 RECORD_DIR="/tmp/obs-recordings"
 
-echo "=== Chrome Screen Recording Setup ==="
+echo "=== Screencast Setup ==="
 echo
 
 # 1. Check Node.js

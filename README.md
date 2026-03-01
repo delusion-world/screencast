@@ -1,4 +1,4 @@
-# Chrome Screen Recording for Claude Code
+# Screencast for Claude Code
 
 Record your Chrome browser screen as MP4 using OBS Studio, controlled directly from Claude Code.
 
@@ -14,7 +14,7 @@ Record your Chrome browser screen as MP4 using OBS Studio, controlled directly f
 ### 1. Clone the repo
 
 ```bash
-git clone https://github.com/delusion-world/chrome-screen-recording.git ~/.claude/plugins/chrome-screen-recording
+git clone https://github.com/delusion-world/screencast.git ~/.claude/plugins/screencast
 ```
 
 Or clone anywhere you prefer — the plugin auto-discovers its script location.
@@ -22,7 +22,7 @@ Or clone anywhere you prefer — the plugin auto-discovers its script location.
 ### 2. Install dependencies
 
 ```bash
-cd ~/.claude/plugins/chrome-screen-recording
+cd ~/.claude/plugins/screencast
 bash scripts/setup.sh
 ```
 
@@ -37,18 +37,18 @@ Copy the slash command and skill into your project or global Claude Code config:
 mkdir -p .claude/commands .claude/skills
 
 # Copy slash command
-cp ~/.claude/plugins/chrome-screen-recording/commands/screen-record.md .claude/commands/
+cp ~/.claude/plugins/screencast/commands/screen-record.md .claude/commands/
 
 # Copy skill
-cp -r ~/.claude/plugins/chrome-screen-recording/skills/chrome-screen-recording .claude/skills/
+cp -r ~/.claude/plugins/screencast/skills/screencast .claude/skills/
 ```
 
 **Option B: Global** (all projects)
 
 ```bash
 # Copy to global Claude Code config
-cp ~/.claude/plugins/chrome-screen-recording/commands/screen-record.md ~/.claude/commands/
-cp -r ~/.claude/plugins/chrome-screen-recording/skills/chrome-screen-recording ~/.claude/skills/
+cp ~/.claude/plugins/screencast/commands/screen-record.md ~/.claude/commands/
+cp -r ~/.claude/plugins/screencast/skills/screencast ~/.claude/skills/
 ```
 
 ### 4. Configure OBS
@@ -117,7 +117,7 @@ Add to your `~/.zshrc` or `~/.bashrc` to persist.
 If you cloned the repo to a non-standard location, set:
 
 ```bash
-export CHROME_SCREEN_RECORDING_DIR="/path/to/chrome-screen-recording"
+export SCREENCAST_DIR="/path/to/screencast"
 ```
 
 ## Troubleshooting
